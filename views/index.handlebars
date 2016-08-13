@@ -1,0 +1,27 @@
+<h1>much sounds</h1>
+
+<input id="words" type="text">
+<button onclick="SayIt()">Speak</button>
+
+<ul>
+{{#each sounds}}
+  <button onclick="playSound('{{ this.name }}')">{{ this.name }}</button>
+{{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+
+  function playSound(name) {
+    socket.emit('play', name);
+  }
+
+  function SayIt() {
+    var input = document.getElementById('words');
+    console.log('speak', input.value)
+    socket.emit('speak', input.value);
+    input.value = '';
+  }
+
+</script>

@@ -1,0 +1,31 @@
+{
+  "name": "soundmix",
+  "description": "soundboard for mix",
+  "version": "1.0.0",
+  "author": "Dan Flettre <fletd01@yahoo.com>",
+  "bugs": {
+    "url": "https://github.com/Flet/soundmix/issues"
+  },
+  "devDependencies": {
+    "semistandard": "*",
+    "tap-spec": "^4.0.2",
+    "tape": "^4.0.0"
+  },
+  "homepage": "https://github.com/Flet/soundmix",
+  "keywords": [],
+  "license": "ISC",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Flet/soundmix.git"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "tape test/*.js | tap-spec && semistandard"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
+    "socket.io": "^1.4.8"
+  }
+}
