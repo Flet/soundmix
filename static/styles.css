@@ -12,3 +12,7 @@ button, input {
 button {
   background-color: #CCC;
 }
+
+a, a:visited {
+  color: lightblue;
+}
