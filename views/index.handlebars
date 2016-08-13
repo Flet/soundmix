@@ -1,13 +1,13 @@
 <h1>much sounds</h1>
 
-<input id="words" type="text">
-<button onclick="SayIt()">Speak</button>
-
-<ul>
 {{#each sounds}}
   <button onclick="playSound('{{ this.name }}')">{{ this.name }}</button>
 {{/each}}
-</ul>
+
+<hr/>
+<h3> say things</h3>
+<input id="words" type="text" style="width:50%">
+<button onclick="SayIt()">Speak</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -25,5 +25,3 @@
   }
 
 </script>
-
-<a href="/speaker">Speaker page (where the sounds will play)</a>

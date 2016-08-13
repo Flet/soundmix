@@ -3,9 +3,13 @@ body {
   color: white;
 }
 
+.content {
+  text-align: center;
+}
+
 button, input {
-  padding:20px;
-  margin: 20px;
+  padding: 10px;
+  margin-bottom: 20px;
   font-size:20px;
 }
 
@@ -15,4 +19,11 @@ button {
 
 a, a:visited {
   color: lightblue;
+}
+
+@media (max-width: 1000px) {
+  button, input {
+    font-size: 25px;
+    width: 80%;
+  }
 }
