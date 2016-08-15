@@ -7,7 +7,7 @@
 <hr/>
 <h3> say things</h3>
 <input id="words" type="text" style="width:50%">
-<button onclick="SayIt()">Speak</button>
+<button onclick="sayIt()">Speak</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -17,11 +17,17 @@
     socket.emit('play', name);
   }
 
-  function SayIt() {
+  function sayIt() {
     var input = document.getElementById('words');
     console.log('speak', input.value)
     socket.emit('speak', input.value);
     input.value = '';
   }
+
+  document.getElementById("words")
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode == 13) sayIt();
+  });
 
 </script>
