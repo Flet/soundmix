@@ -6,18 +6,20 @@
 {{/each}}
 </ul>
 
+<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
 
   socket.on('invokesound', function (name) {
-    console.log('play sound!')
     document.getElementById(name).play();
   });
 
   socket.on('invokespeech', function (words) {
-    var msg = new SpeechSynthesisUtterance(words);
-    window.speechSynthesis.speak(msg);
+    responsiveVoice.speak(words);
   });
 </script>
 
+<footer>
+<div><a href="http://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></div>
+</footer>
