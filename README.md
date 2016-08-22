@@ -31,6 +31,7 @@ To add more sounds, just drop them in the `static/sounds` directory and they wil
 - http://soundbible.com/295-Summer-Crickets-Chirping.html  (personal use only)
 - https://www.freesoundeffects.com/free-sounds/applause-10033/
 - http://soundbible.com/1825-Funny-Boy-Laugh.html
+- https://archive.org/details/PeanutsTeacherVoice
 
 http://www.freesfx.co.uk/ sounds:
 - Small Crowd Gasping
