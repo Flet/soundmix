@@ -36,6 +36,18 @@ app.get('/speaker', function (req, res, next) {
   });
 });
 
+app.get('/api/play/:sound', function (req, res, next) {
+  io.emit('invokesound', req.params.sound);
+  res.json({winner: 'you'});
+});
+
+app.get('/api/sounds', function (req, res, next) {
+  gimmieSounds((err, sounds) => {
+    if (err) return next(err);
+    res.json(sounds.map(s => s.name));
+  });
+});
+
 io.on('connection', function (socket) {
   console.log('a user connected');
   socket.on('disconnect', function () {
