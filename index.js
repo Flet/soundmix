@@ -32,14 +32,6 @@ function gimmieSounds (cb) {
   });
 }
 
-app.get('/speaker', function (req, res, next) {
-  gimmieSounds((err, sounds) => {
-    if (err) return next(err);
-    console.log('sounds', sounds);
-    res.render('speaker', {sounds: sounds});
-  });
-});
-
 app.get('/api/play/:sound', function (req, res, next) {
   io.emit('invokesound', req.params.sound);
   res.json({winner: 'you'});
