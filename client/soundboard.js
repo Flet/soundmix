@@ -2,9 +2,13 @@
 require('./styles.css');
 
 var io = require('socket.io-client');
-var Howl = require('howler').Howl;
+var howler = require('howler');
+var Howl = howler.Howl;
+var Howler = howler.Howler;
 var socket = io();
 var sounds = {};
+
+var mute = false;
 
 function ready (fn) {
   if (document.readyState !== 'loading') {
@@ -23,7 +27,19 @@ ready(function () {
     }
   );
   document.getElementById('speak').onclick = sayIt;
+  document.getElementById('mute').onclick = toggleMute;
 });
+
+function toggleMute () {
+  mute = !mute;
+  Howler.mute(mute);
+  var btn = document.getElementById('mute');
+  if (mute) {
+    btn.classList.add('muted');
+  } else {
+    btn.classList.remove('muted');
+  }
+}
 
 function sayIt () {
   var input = document.getElementById('words');
@@ -40,16 +56,16 @@ document.getElementById('words')
 
 socket.on('invokesound', function (name) {
   console.log('invokesound', name);
-  if (!sounds[name]) sounds[name] = new Howl({src: [`sounds/${name}.mp3`]});
+  if (!sounds[name]) sounds[name] = new Howl({src: ['sounds/' + name + '.mp3']});
   if (sounds[name].playing()) return;
   sounds[name].play();
   document.getElementById(name).classList.add('playing');
 
-  sounds[name].once('end', () => {
+  sounds[name].once('end', function () {
     document.getElementById(name).classList.remove('playing');
   });
 });
 
 socket.on('invokespeech', function (words) {
-  window.responsiveVoice.speak(words);
+  if (!mute) window.responsiveVoice.speak(words);
 });
