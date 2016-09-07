@@ -24,6 +24,10 @@ function gimmieSounds (cb) {
     if (err) return cb(err);
     console.log('files', files);
     var filez = files.map(f => path.parse(f));
+    filez = filez.map(f => {
+      f.friendlyName = f.name.replace(/_/g, ' ');
+      return f;
+    });
     cb(null, filez);
   });
 }
