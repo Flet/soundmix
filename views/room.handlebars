@@ -1,0 +1,30 @@
+
+<div class="toolbar panel">
+  <button id="mute">Mute</button>
+</div>
+
+<div class="panel">
+  <h2>{{ room }} soundboard</h2>
+
+{{#each sounds}}
+  <button class="soundbutton" id="{{this.name}}">{{ this.friendlyName }}</button>
+{{/each}}
+</div>
+
+<div class="panel">
+  <h2>say things</h2>
+  <input id="words" type="text" style="width:50%">
+  <button id="speak">Speak</button>
+</div>
+
+<script>
+window.room = '{{ this.room }}';
+console.log('boom', window.room)
+</script>
+
+<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+<script src="/room.bundle.js"></script>
+
+  <footer>
+    <div><a href="http://responsivevoice.org">ResponsiveVoice-NonCommercial</a> licensed under <a href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img title="ResponsiveVoice Text To Speech" src="https://responsivevoice.org/wp-content/uploads/2014/08/95x15.png" alt="95x15" width="95" height="15" /></div>
+  </footer>

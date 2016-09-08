@@ -5,10 +5,12 @@ var path = require('path');
 module.exports = {
   context: __dirname,
   devtool: debug ? 'inline-sourcemap' : null,
-  entry: './client/soundboard.js',
+  entry: {
+    room: './client/room.js',
+    main: './client/main.js'},
   output: {
     path: path.join(__dirname, 'static'),
-    filename: 'soundboard.bundle.js'
+    filename: '[name].bundle.js'
   },
   plugins: debug ? [] : [
     new webpack.optimize.DedupePlugin(),

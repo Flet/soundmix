@@ -1,11 +1,15 @@
-// styles
-require('./styles.css');
-
 var io = require('socket.io-client');
 var howler = require('howler');
 var Howl = howler.Howl;
 var Howler = howler.Howler;
 var socket = io();
+socket.emit('room', window.room);
+
+// rejoin if there's a disconnect
+socket.on('reconnect', function () {
+  socket.emit('room', window.room);
+});
+
 var sounds = {};
 
 var mute = false;
@@ -56,7 +60,7 @@ document.getElementById('words')
 
 socket.on('invokesound', function (name) {
   console.log('invokesound', name);
-  if (!sounds[name]) sounds[name] = new Howl({src: ['sounds/' + name + '.mp3']});
+  if (!sounds[name]) sounds[name] = new Howl({src: ['/sounds/' + name + '.mp3']});
   if (sounds[name].playing()) return;
   sounds[name].play();
   document.getElementById(name).classList.add('playing');

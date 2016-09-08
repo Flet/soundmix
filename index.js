@@ -13,9 +13,28 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res, next) {
+  var ioRooms = Object.keys(io.sockets.adapter.rooms)
+    .filter(f => !f.startsWith('/#'))
+    .filter(f => f !== 'null')
+    .sort();
+
+  var rooms = ioRooms.map(r => {
+    return {
+      room: r,
+      users: io.sockets.adapter.rooms[r].length
+    };
+  });
+  res.render('index', {rooms: rooms});
+});
+
+app.get('/room/:room', function (req, res, next) {
+  // sanitize the room name
+  var room = req.params.room.replace(/[^\w]/gi, '');
+  if (req.params.room !== room) return res.redirect(`/room/${room}`);
+
   gimmieSounds((err, sounds) => {
     if (err) return next(err);
-    res.render('index', {sounds: sounds});
+    res.render('room', {sounds: sounds, room: room});
   });
 });
 
@@ -32,8 +51,9 @@ function gimmieSounds (cb) {
   });
 }
 
-app.get('/api/play/:sound', function (req, res, next) {
-  io.emit('invokesound', req.params.sound);
+app.get('/api/play/:room/:sound', function (req, res, next) {
+  var room = req.params.room.replace(/[^\w]/gi, '');
+  io.to(room).emit('invokesound', req.params.sound);
   res.json({winner: 'you'});
 });
 
@@ -46,18 +66,25 @@ app.get('/api/sounds', function (req, res, next) {
 
 io.on('connection', function (socket) {
   console.log('a user connected');
+
+  socket.on('room', function (room) {
+    console.log('user joining room' + room);
+    socket.join(room);
+    socket.room = room;
+  });
+
   socket.on('disconnect', function () {
     console.log('user disconnected');
   });
 
   socket.on('play', function (data) {
     console.log('play', data);
-    io.emit('invokesound', data);
+    io.to(socket.room).emit('invokesound', data);
   });
 
   socket.on('speak', function (data) {
     console.log('speak', data);
-    io.emit('invokespeech', data);
+    io.to(socket.room).emit('invokespeech', data.slice(0, 100)); // limit to 100 characters
   });
 });
 

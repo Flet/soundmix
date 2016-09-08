@@ -1,21 +1,16 @@
 
-<div class="toolbar panel">
-  <button id="mute">Mute</button>
-</div>
-
 <div class="panel">
-  <h2>much sounds</h2>
+  <h2>rooms</h2>
 
-{{#each sounds}}
-  <button class="soundbutton" id="{{this.name}}">{{ this.friendlyName }}</button>
+{{#each rooms}}
+  <button class="roombutton" id={{this.room}}>{{ this.room }}<br/>({{ this.users }} connected)</button>
 {{/each}}
 </div>
 
 <div class="panel">
-  <h2>say things</h2>
-  <input id="words" type="text" style="width:50%">
-  <button id="speak">Speak</button>
+  <h2>create room</h2>
+  <input id="room" type="text" style="width:50%">
+  <button id="createroom">JOIN</button>
 </div>
 
-<script src='https://code.responsivevoice.org/responsivevoice.js'></script>
-<script src="/soundboard.bundle.js"></script>
+<script src="/main.bundle.js"></script>
