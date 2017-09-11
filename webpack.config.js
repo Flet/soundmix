@@ -1,6 +1,6 @@
-var debug = process.env.NODE_ENV !== 'production';
-var webpack = require('webpack');
-var path = require('path');
+var debug = process.env.NODE_ENV !== 'production'
+var webpack = require('webpack')
+var path = require('path')
 
 module.exports = {
   context: __dirname,
@@ -22,4 +22,4 @@ module.exports = {
       { test: /\.css$/, loader: 'style-loader!css-loader' }
     ]
   }
-};
+}

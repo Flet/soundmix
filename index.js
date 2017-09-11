@@ -1,99 +1,99 @@
-var express = require('express');
-var exphbs = require('express-handlebars');
-var path = require('path');
-var fs = require('fs');
+var express = require('express')
+var exphbs = require('express-handlebars')
+var path = require('path')
+var fs = require('fs')
 
-var app = express();
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var app = express()
+var http = require('http').Server(app)
+var io = require('socket.io')(http)
 
-var soundDir = path.join(__dirname, 'static', 'sounds');
+var soundDir = path.join(__dirname, 'static', 'sounds')
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}))
+app.set('view engine', 'handlebars')
 
 app.get('/', function (req, res, next) {
   var ioRooms = Object.keys(io.sockets.adapter.rooms)
     .filter(f => !f.startsWith('/#'))
     .filter(f => f !== 'null')
-    .sort();
+    .sort()
 
   var rooms = ioRooms.map(r => {
     return {
       room: r,
       users: io.sockets.adapter.rooms[r].length
-    };
-  });
-  res.render('index', {rooms: rooms});
-});
+    }
+  })
+  res.render('index', {rooms: rooms})
+})
 
 app.get('/room/:room', function (req, res, next) {
   // sanitize the room name
-  var room = req.params.room.replace(/[^\w]/gi, '');
-  if (req.params.room !== room) return res.redirect(`/room/${room}`);
+  var room = req.params.room.replace(/[^\w]/gi, '')
+  if (req.params.room !== room) return res.redirect(`/room/${room}`)
 
   gimmieSounds((err, sounds) => {
-    if (err) return next(err);
-    res.render('room', {sounds: sounds, room: room});
-  });
-});
+    if (err) return next(err)
+    res.render('room', {sounds: sounds, room: room})
+  })
+})
 
 function gimmieSounds (cb) {
   fs.readdir(soundDir, (err, files) => {
-    if (err) return cb(err);
-    console.log('files', files);
-    var filez = files.map(f => path.parse(f));
+    if (err) return cb(err)
+    console.log('files', files)
+    var filez = files.map(f => path.parse(f))
     filez = filez.map(f => {
-      f.friendlyName = f.name.replace(/_/g, ' ');
-      return f;
-    });
-    cb(null, filez);
-  });
+      f.friendlyName = f.name.replace(/_/g, ' ')
+      return f
+    })
+    cb(null, filez)
+  })
 }
 
 app.get('/api/play/:room/:sound', function (req, res, next) {
-  var room = req.params.room.replace(/[^\w]/gi, '');
-  io.to(room).emit('invokesound', req.params.sound);
-  res.json({winner: 'you'});
-});
+  var room = req.params.room.replace(/[^\w]/gi, '')
+  io.to(room).emit('invokesound', req.params.sound)
+  res.json({winner: 'you'})
+})
 
 app.get('/api/sounds', function (req, res, next) {
   gimmieSounds((err, sounds) => {
-    if (err) return next(err);
-    res.json(sounds.map(s => s.name));
-  });
-});
+    if (err) return next(err)
+    res.json(sounds.map(s => s.name))
+  })
+})
 
 io.on('connection', function (socket) {
-  console.log('a user connected');
+  console.log('a user connected')
 
   socket.on('room', function (room) {
-    console.log('user joining room' + room);
-    socket.join(room);
-    socket.room = room;
-  });
+    console.log('user joining room' + room)
+    socket.join(room)
+    socket.room = room
+  })
 
   socket.on('disconnect', function () {
-    console.log('user disconnected');
-  });
+    console.log('user disconnected')
+  })
 
   socket.on('play', function (data) {
-    console.log('play', data);
-    io.to(socket.room).emit('invokesound', data);
-  });
+    console.log('play', data)
+    io.to(socket.room).emit('invokesound', data)
+  })
 
   socket.on('speak', function (data) {
-    console.log('speak', data);
-    io.to(socket.room).emit('invokespeech', data.slice(0, 100)); // limit to 100 characters
-  });
-});
+    console.log('speak', data)
+    io.to(socket.room).emit('invokespeech', data.slice(0, 100)) // limit to 100 characters
+  })
+})
 
-app.use(express.static('static'));
+app.use(express.static('static'))
 
 http.listen(process.env.PORT || 4000, function (err) {
   if (err) {
-    console.error(err);
+    console.error(err)
   }
 
-  console.log('App is up and listening.');
-});
+  console.log('App is up and listening.')
+})
