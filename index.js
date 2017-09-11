@@ -5,7 +5,8 @@ var fs = require('fs')
 
 var app = express()
 var http = require('http').Server(app)
-var io = require('socket.io')(http)
+var NAMESPACE = 'SOUNDMIX'
+var io = require('socket.io')(http).of(NAMESPACE)
 
 var soundDir = path.join(__dirname, 'static', 'sounds')
 
@@ -13,15 +14,15 @@ app.engine('handlebars', exphbs({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')
 
 app.get('/', function (req, res, next) {
-  var ioRooms = Object.keys(io.sockets.adapter.rooms)
-    .filter(f => !f.startsWith('/#'))
+  var ioRooms = Object.keys(io.adapter.rooms)
+    .filter(f => !f.startsWith('/' + NAMESPACE))
     .filter(f => f !== 'null')
     .sort()
 
   var rooms = ioRooms.map(r => {
     return {
       room: r,
-      users: io.sockets.adapter.rooms[r].length
+      users: io.adapter.rooms[r].length
     }
   })
   res.render('index', {rooms: rooms})

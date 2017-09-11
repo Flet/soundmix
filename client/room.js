@@ -2,7 +2,7 @@ var io = require('socket.io-client')
 var howler = require('howler')
 var Howl = howler.Howl
 var Howler = howler.Howler
-var socket = io()
+var socket = io('/SOUNDMIX')
 socket.emit('room', window.room)
 
 // rejoin if there's a disconnect
