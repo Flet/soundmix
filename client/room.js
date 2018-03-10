@@ -23,7 +23,9 @@ function ready (fn) {
 }
 
 ready(function () {
-  Array.from(document.getElementsByClassName('soundbutton')).forEach(
+  window.allSounds = Array.from(document.getElementsByClassName('soundbutton'))
+
+  window.allSounds.forEach(
     function (element, index, array) {
       element.onclick = function () {
         socket.emit('play', element.id)
@@ -32,6 +34,7 @@ ready(function () {
   )
   document.getElementById('speak').onclick = sayIt
   document.getElementById('mute').onclick = toggleMute
+  document.getElementById('clear').onclick = clearFilter
 })
 
 function toggleMute () {
@@ -43,6 +46,28 @@ function toggleMute () {
   } else {
     btn.classList.remove('muted')
   }
+}
+
+document.getElementById('filter')
+  .addEventListener('keyup', function (event) {
+    filterSounds(this.value)
+  })
+
+function filterSounds (txt) {
+  txt = txt.toUpperCase()
+  window.allSounds.forEach(
+    function (element, index, array) {
+      if (element.innerText.toUpperCase().indexOf(txt) > -1) {
+        element.style.display = 'inline-block'
+      } else {
+        element.style.display = 'none'
+      }
+    })
+}
+
+function clearFilter () {
+  document.getElementById('filter').value = ''
+  filterSounds('')
 }
 
 function sayIt () {

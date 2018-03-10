@@ -57,15 +57,22 @@ a, a:visited {
 }
 
 .toolbar {
-  width: 30%;
-  position: absolute;
+  width: 100%;
+  position: fixed;
   top: 0;
   right: 0;
-  text-align: right;
+  background: #343F56;
 }
 .toolbar button {
   max-width: 80px;
   min-width: 80px;
+  font-size:12px;
+  padding:5px;
+}
+
+.toolbar input {
+  padding: 5px;
+  font-size: 12px;
 }
 
 .toolbar button.muted {

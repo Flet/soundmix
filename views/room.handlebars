@@ -1,11 +1,11 @@
 
 <div class="toolbar panel">
-  <button id="mute">Mute</button>
+  <input id="filter" type="text" placeholder="Filter" style="width:50%">
+  <button id="clear">Clear</button>
+  <button id="mute" style="float: right">Mute</button>
 </div>
 
-<div class="panel">
-  <h2>{{ room }} soundboard</h2>
-
+<div class="panel" style="margin-top:100px">
 {{#each sounds}}
   <button class="soundbutton" id="{{this.name}}">{{ this.friendlyName }}</button>
 {{/each}}
