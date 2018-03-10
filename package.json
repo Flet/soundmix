@@ -28,7 +28,7 @@
     "start": "node index.js",
     "test": "tape test/*.js | tap-spec && semistandard",
     "dev": "parallelshell \"nodemon\" \"webpack --watch\"",
-    "build": "NODE_ENV=production webpack"
+    "build": "webpack -p"
   },
   "dependencies": {
     "express": "^4.14.0",
