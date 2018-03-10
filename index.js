@@ -42,7 +42,6 @@ app.get('/room/:room', function (req, res, next) {
 function gimmieSounds (cb) {
   fs.readdir(soundDir, (err, files) => {
     if (err) return cb(err)
-    console.log('files', files)
     var filez = files.map(f => path.parse(f))
     filez = filez.map(f => {
       f.friendlyName = f.name.replace(/_/g, ' ')
