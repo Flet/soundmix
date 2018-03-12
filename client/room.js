@@ -25,8 +25,14 @@ function ready (fn) {
 ready(function () {
   window.allSounds = Array.from(document.getElementsByClassName('soundbutton'))
 
+  window.displayMap = []
+
   window.allSounds.forEach(
     function (element, index, array) {
+      window.displayMap.push({
+        name: element.innerText.toUpperCase(),
+        element: element })
+
       element.onclick = function () {
         socket.emit('play', element.id)
       }
@@ -55,12 +61,13 @@ document.getElementById('filter')
 
 function filterSounds (txt) {
   txt = txt.toUpperCase()
-  window.allSounds.forEach(
-    function (element, index, array) {
-      if (element.innerText.toUpperCase().indexOf(txt) > -1) {
-        element.style.display = 'inline-block'
+
+  window.displayMap.forEach(
+    function (item) {
+      if (item.name.indexOf(txt) > -1) {
+        item.element.style.display = 'inline-block'
       } else {
-        element.style.display = 'none'
+        item.element.style.display = 'none'
       }
     })
 }
